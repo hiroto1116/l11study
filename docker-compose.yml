@@ -7,7 +7,7 @@ services:
     depends_on:
       - l11dev-app
     ports:
-      - 80:80
+      - "8080:80"
     volumes:
       - ./:/src
 

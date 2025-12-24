@@ -21,22 +21,36 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        Post::create([
-            'title' => $request->title,
-            'body' => $request->body,
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'body'  => 'required',
         ]);
 
-        return redirect('/posts');
+        Post::create($validated);
+
+        return redirect('/posts')->with('success', '保存しました');
     }
 
-    // public function edit(Post $post)
-    // {
-    //     return view('posts.edit', compact('post'));
-    // }
+    public function edit(Post $post)
+    {
+        return view('posts.edit', compact('post'));
+    }
 
-    // public function update(Request $request, Post $post)
-    // {
-    //     $post->update($request->only(['title', 'body']));
-    //     return redirect('/posts');
-    // }
+    public function update(Request $request, Post $post)
+    {
+        $validated = $request->validate([
+            'title' => 'required|max:20',
+            'body'  => 'required',
+        ]);
+
+        $post->update($validated);
+
+        return redirect('/posts')->with('success', '更新しました');
+    }
+
+    public function destroy(Post $post)
+    {
+        $post->delete();
+        return redirect('/posts')->with('success', '削除しました');
+    }
 }
